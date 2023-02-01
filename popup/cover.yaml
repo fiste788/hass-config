@@ -1,0 +1,106 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: >
+      [[[ return entity === undefined || entity.attributes.friendly_name; ]]]
+  card_mod:
+    style:
+        #popup header
+        .:
+  style: >
+      vertical-slider-cover-card: 
+      $: |
+        .page {
+          display: block;
+        }
+        .page .main {
+          padding: 0 2em;
+          width:100%;
+        }
+        
+        .page > .main > .inner-main {
+          justify-content: start;
+          align-items: start !important;
+          flex-direction: column !important;
+        }
+        .page > .main > .inner-main > .cover {
+          width:100% !important;
+          margin: 1rem 0 !important;
+        }
+        .cover-name {
+          font-size: 16px !important;
+        }
+        .page .cover-position {
+          font-size: 2em;
+          font-weight: 400;
+          position: absolute;
+          top: 50%;
+          left: calc((100% - 140px) / 2);
+          z-index: 1;
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .page .cover-slider {
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          position: relative;
+          width: 100%;
+        }
+        .page .cover-slider .toggle {
+          position: absolute;
+          top: 25%;
+          right: 0px;
+        }
+        .page .range-holder {
+          width: var(--slider-height) !important;
+          height: auto;
+        }
+        .page .range-holder>input[type=range] {
+          border-radius: 1.7em;
+          cursor: grab;
+          --slider-thumb-color: #b4b4b4;
+          transform: none;
+          width: 100% !important;
+          position: static;
+        }
+        .page .toggle > input.toggle-btn + label {
+          width: auto;
+        }
+        
+        .page .range-holder>input[type="range"]::-webkit-slider-thumb {
+          width: 25px;
+          border-right: 10px solid var(--open-color);
+          border-left: 10px solid var(--open-color);
+          border-top: 20px solid var(--open-color);
+          border-bottom: 20px solid var(--open-color);
+          -webkit-appearance: none;
+          height: 80px;
+          cursor: ew-resize;
+          background: var(--open-color);
+          box-shadow: -350px 0 0 350px var(--open-color),
+            inset 0 0 0 80px var(--slider-thumb-color);
+          border-radius: 0;
+          transition: box-shadow 0.2s ease-in-out;
+          position: relative;
+          top: calc((var(--slider-width) - 80px) / 2);
+        }
+        .page .range-holder>input[type=range]::-webkit-slider-thumb {
+          cursor: grabbing;
+        }
+    
+  content:
+    type: custom:vertical-slider-cover-card
+    entities: >
+      [[[ return entity.attributes.entity_id.map(e => ({entity: e})) || {entity: variable.entity_id}; ]]]
+    title: >
+      [[[ return entity === undefined || entity.attributes.friendly_name; ]]]
+    showSidebar: false
+    positionHeight: 'calc(100% - 80px)'
+    positionWidth: 80px
+    openColor: '#c7c7c7'
+    closedColor: rgba(25, 25, 25, 0.9)
+    switchColor: transparent
+    gapWidth: 50px
+    switchHeight: 2.5em
+

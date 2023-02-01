@@ -1,34 +1,30 @@
 homeassistant:
   customize:
-    person.matte:
-      entity_picture: /local/mattias.png
-    device_tracker.iphone:
-      entity_picture: /local/device_tracker.svg
-    person.sanja:
-      entity_picture: /local/sanja.png
+    person.stefano:
+      friendly_name: Stefano
+    person.lidia:
+      friendly_name: Lidia
 
-person:
-  - name: Matte
-    id: matte
-    device_trackers:
-      - device_tracker.mattias_iphone_unifi
-      - device_tracker.iphone #ios
+# person:
+#   - name: Stefano
+#     id: stefano
+#     device_trackers:
+#       - device_tracker.pixel_2_xl
 
-  - name: Sanja
-    id: sanja
-    device_trackers:
-      - device_tracker.sanjas_iphone_unifi
-      - device_tracker.sanja_iphone_13 #ios
+#   - name: Lidia
+#     id: lidia
+#     device_trackers:
+#       - device_tracker.iphone_di_lidia
 
 mqtt:
   sensor:
-    - name: matte_last_changed
-      state_topic: homeassistant/persistence/matte
+    - name: stefano_last_changed
+      state_topic: homeassistant/persistence/stefano
       value_template: >
         {{ value | replace(' ', 'T') }}
 
-    - name: sanja_last_changed
-      state_topic: homeassistant/persistence/sanja
+    - name: lidia_last_changed
+      state_topic: homeassistant/persistence/lidia
       value_template: >
         {{ value | replace(' ', 'T') }}
 
@@ -39,8 +35,8 @@ automation:
     trigger:
       platform: state
       entity_id:
-        - person.matte
-        - person.sanja
+        - person.stefano
+        - person.lidia
       from:
         - home
         - not_home

@@ -78,6 +78,21 @@ tablet:
   state-sensor-battery-low-color: var(--rgb-state-default-color)
   state-sensor-battery-medium-color: var(--rgb-state-default-color)
 
+  #weather icons
+  weather-icon-clear-night: url("/local/img/weather/moon.png")
+  weather-icon-cloudy: url("/local/img/weather/cloudy.png")
+  weather-icon-lightning: url("/local/img/weather/lightning.png")
+  weather-icon-lightning-rainy: url("/local/img/weather/storm.png")
+  weather-icon-partlycloudy: url("/local/img/weather/cloud.png")
+  weather-icon-pouring: url("/local/img/weather/pouring.png")
+  weather-icon-rainy: url("/local/img/weather/rainy.png")
+  weather-icon-hail: url("/local/img/weather/hail.png")
+  weather-icon-snowy: url("/local/img/weather/snow.png")
+  weather-icon-snowy-rainy: url("/local/img/weather/sleet.png")
+  weather-icon-sunny: url("/local/img/weather/sun.png")
+  weather-icon-windy: url("/local/img/weather/windy.png")
+  weather-icon-windy-variant: url("/local/img/weather/windy.png")
+  weather-icon-exceptional: url("/local/img/weather/sun.png")
   #font
   primary-font-family: SF Pro Text, Roboto, system-ui
   paper-font-common-base_-_font-family: var(--primary-font-family)
@@ -137,11 +152,11 @@ tablet:
   tablet-popup-align-dialog: center
   tablet-popup-margin-top: 0px
 
-  ####################################################
-  #                                                  #
-  #                     CARD-MOD                     #
-  #                                                  #
-  ####################################################
+####################################################
+#                                                  #
+#                     CARD-MOD                     #
+#                                                  #
+####################################################
 
   card-mod-theme: tablet
 
@@ -230,6 +245,11 @@ tablet:
         border-right: 0.1vw solid rgba(58, 69, 73, 0.2);
         min-height: 100vh;
       }
+      #root hui-weather-forecast-card, #root todoist-card, #root atomic-calendar-revive {
+        background-color: rgba(115,115,115,0.2);
+        margin: 0.5rem 1rem;
+        border-radius: 10px;
+      }
       /* phone */
       @media screen and (max-width: 800px) {
         #root {
@@ -240,7 +260,13 @@ tablet:
           margin-bottom: -6%;
         }
       }
-
+    grid-layout$hui-vertical-stack-card$hui-weather-forecast-card$: |
+      .name-state {
+        display: grid;
+      }
+      .icon-image {
+        min-width:64px !important;
+      }
     #################################################
     #                                               #
     #             SIDEBAR LAUNDRY TIMER             #
@@ -305,7 +331,26 @@ tablet:
     .content .card-content {
       padding: var(--tablet-popup-content-padding);
     }
-
+    /* * * * * * * * * * * * * * * * * *
+      *                                 *
+      *           BUTTON CARD           *
+      *                                 *
+      * * * * * * * * * * * * * * * * * */
+    .type-button {
+      display: block;
+      --paper-item-icon-color: var(--state-icon-color);
+      opacity: 0.2;
+      transition: 0.4s;
+      height: initial;
+    }
+    .type-button:hover {
+      opacity: 0.5;
+      transition: none;
+    }
+    .type-button:active {
+      opacity: 0.7;
+      transition: none;
+    }
     /* * * * * * * * * * * * * * * * * *
       *                                 *
       *         CUSTOM BAR CARD         *
@@ -374,4 +419,41 @@ tablet:
     ha-dialog$: |
       div.mdc-dialog__surface {
         background-color: var(--popup-background-color) !important;
+      }
+      
+    ha-header-bar$: |
+      header {
+        background: var(--tablet-popup-header-color) !important;
+        border-bottom: var(--tablet-popup-border-style);
+      }
+    #################################################
+    #                                               #
+    #            CUSTOM LIGHT POPUP CARD            #
+    #                                               #
+    #################################################
+    light-popup-card$: |
+      #popup {
+        margin: -2em 0 2.5em 0;
+        isolation: isolate;
+      }
+      input[type=range] {
+        cursor: grab;
+      }
+      #brightnessValue {
+        color: rgba(255, 255, 255, 0.8);
+        margin: -10vh 0 0 0;
+        font-size: 2em;
+        font-weight: 400;
+        position: absolute;
+        z-index: 1;
+        letter-spacing: -0.01em;
+        pointer-events: none;
+        mix-blend-mode: difference;
+        text-align: center;
+      }
+      #popup>div.range-holder>input[type=range] {
+        --slider-thumb-color: #b4b4b4 !important;
+      }
+      #popup>div.range-holder>input[type=range]::-webkit-slider-thumb {
+        cursor: grabbing;
       }

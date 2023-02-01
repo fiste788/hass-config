@@ -11,7 +11,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: UniFi Dream Machine
+    title: FritzBox
     content:
       type: vertical-stack
       cards:
@@ -20,12 +20,8 @@ browser_mod:
           card_mod:
             class: content
           entities:
-
-            # - entity: binary_sensor.template_udm_internet
-            #   secondary_info: last-changed
-
-            - entity: sensor.template_udm_cpu_temp
-              name: CPU Temperatur
+            - entity: binary_sensor.fritz_box_7590_connection
+              secondary_info: last-changed
 
             - type: custom:bar-card
               width: 55%
@@ -42,11 +38,10 @@ browser_mod:
                   to: 999
               entity_row: true
               entities:
-                - entity: sensor.template_udm_cpu
-                - entity: sensor.template_udm_mem
-                - entity: sensor.template_udm_disk
+                - entity: sensor.fritz_box_7590_gb_received
+                - entity: sensor.fritz_box_7590_gb_sent
 
-            - entity: sensor.template_udm_uptime
+            - entity: sensor.fritz_box_7590_device_uptime
 
         - type: custom:mod-card
           card_mod:
@@ -60,11 +55,11 @@ browser_mod:
             type: horizontal-stack
             cards:
               - type: custom:button-card
-                name: Nätverksenheter
+                name: Dispositivi
                 icon: mdi:devices
                 tap_action:
                   action: url
-                  url_path: https://192.168.1.1/network/default/clients
+                  url_path: https://192.168.0.1/network/default/clients
                 template: icon_name
 
               - type: custom:button-card
@@ -72,5 +67,22 @@ browser_mod:
                 icon: mdi:cog
                 tap_action:
                   action: url
-                  url_path: https://192.168.1.1/settings/system
+                  url_path: https://192.168.0.1/settings/system
                 template: icon_name
+
+              - type: custom:button-card
+                name: Starta om
+                icon: mdi:restart-alert
+                tap_action:
+                  confirm: >
+                    [[[
+                      return `[[[
+                        if (window.confirm('Sei sicuro di voler riavviare il router?')) {
+                          hass.callService('browser_mod', 'toast', { message: 'Riavvio router...', duration: 3000 });
+                          hass.callService('shell_command', 'fritz.reboot');
+                        }
+                      ]]]`
+                    ]]]
+                template: icon_name
+
+            

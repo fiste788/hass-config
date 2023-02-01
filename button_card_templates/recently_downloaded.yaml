@@ -1,0 +1,90 @@
+recently_downloaded:
+  template:
+    - conditional_media
+  name: Ultimo download
+  variables:
+    i: >
+      [[[
+        if (entity) {
+          let max = entity.attributes.data.length - 1;
+          return Math.floor(Math.random() * max) + 1;
+        }
+      ]]]
+  state_display: >
+    [[[
+      if (entity) {
+        let elt = this.shadowRoot,
+          await = setTimeout(marquee,0),
+          data = entity.attributes.data,
+          number = data[variables.i].number === undefined && data[variables.i].aired !== undefined
+            ? `(${data[variables.i].aired.split("-")[0]})`
+            : data[variables.i].number === undefined && data[variables.i].aired === undefined
+              ? ' '
+              : data[variables.i].number,
+          output =  `${data[variables.i].title} ${number}`;
+        function marquee() {
+          let state = elt.getElementById("state"),
+            container = elt.getElementById("container");
+          if (state && container) {
+            state.innerHTML = output;
+            let ro = new ResizeObserver(entries => {
+              let spacer = "&nbsp;".repeat(3),
+                s = entries[0],
+                c = entries[1],
+                r = s && s.contentRect &&
+                    c && c.contentRect &&
+                    s.contentRect.width !== 0 &&
+                    c.contentRect.width !== 0;
+              if (r && s.contentRect.width < c.contentRect.width) {
+                state.classList.remove("marquee");
+              }
+              else if (r && s.contentRect.width >= c.contentRect.width) {
+                state.innerHTML = `${output} ${spacer} ${output} ${spacer}&nbsp;`;
+                state.classList.add("marquee");
+              }
+            });
+            ro.observe(state);
+            ro.observe(container);
+          }
+        }
+        return output;
+      }
+      return variables.translate_unknown;
+    ]]]
+  custom_fields:
+    blur: >
+      [[[
+        return entity === undefined || '<div></div>';
+      ]]]
+  styles:
+    custom_fields:
+      media_image:
+        - background-position: center center
+        - background-image: >
+            [[[
+                return entity === undefined ||
+                  `url("${entity.attributes.data[variables.i].fanart}"),
+                  url("${entity.attributes.data[variables.i].poster}")`;
+            ]]]
+      blur:
+        - display: >
+            [[[
+              return entity === undefined
+                ? 'none'
+                : 'initial';
+            ]]]
+      overlayx:
+        - display: none
+    card:
+      - color: >
+          [[[
+            return entity === undefined
+              ? 'rgba(255, 255, 255, 0.3)'
+              : '#efefef';
+          ]]]
+      - text-shadow: >
+          [[[ 
+            return entity === undefined 
+              ? 'none' 
+              : '1px 1px 5px rgba(18, 22, 23, 0.9)';
+          ]]]

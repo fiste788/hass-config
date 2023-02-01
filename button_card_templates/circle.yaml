@@ -29,6 +29,7 @@ circle:
                 domain = entity.entity_id.split('.')[0],
                 state = variables.state_on,
                 input = variables.circle_input || ' ',
+                max = variables.max || 100,
                 unit = variables.circle_input_unit || ' ';
 
            /* * * * * * * * * * * * * * * * * *
@@ -37,7 +38,7 @@ circle:
             *                                 *
             * * * * * * * * * * * * * * * * * */
 
-            let circle = (state, input, unit) => {
+            let circle = (state, input, unit, max) => {
                 return `
                   <svg viewBox="0 0 50 50">
                     <style>
@@ -45,7 +46,7 @@ circle:
                         transform: rotate(-90deg);
                         transform-origin: 50% 50%;
                         stroke-dasharray: ${c};
-                        stroke-dashoffset: ${typeof input === 'number' && c - input / 100 * c};
+                        stroke-dashoffset: ${typeof input === 'number' && max && c - input / max * c};
                         stroke-width: var(--c-stroke-width);
                         stroke: ${state ? 'var(--c-stroke-color-on)' : 'var(--c-stroke-color-off)'};
                         fill: ${state ? 'var(--c-fill-color-on)' : 'var(--c-fill-color-off)'};
@@ -68,8 +69,8 @@ circle:
                     <text id="circle_value" x="50%" y="52%">${input}${tspan}${unit}</tspan></text>
                   </svg>
 
-                  ${domain === 'light' && `
-                      <input id="circle_slider" type="range" min="0" max="100" value="${input}">
+                  ${(domain === 'light' || domain === 'cover') && `
+                      <input id="circle_slider" type="range" min="0" max="${max}" value="${input}">
                   `}
                 `;
             }
@@ -80,7 +81,7 @@ circle:
             *                                 *
             * * * * * * * * * * * * * * * * * */
 
-            if (domain === 'light' && state) {
+            if ((domain === 'light' || domain === 'cover') && state) {
 
                 // wait 0ms for shadow dom
                 setTimeout(() => {
@@ -138,17 +139,24 @@ circle:
                                     elt.getElementById('circle').style.display = 'none';
                                 }
 
-                                // set brightness
-                                hass.callService('light', 'turn_on', {
-                                    entity_id: entity.entity_id,
-                                    brightness_pct: this.value
-                                });
+                                if(domain === 'light') {
+                                  // set brightness
+                                  hass.callService('light', 'turn_on', {
+                                      entity_id: entity.entity_id,
+                                      brightness_pct: this.value
+                                  });
+                                } else {
+                                  hass.callService('cover', 'set_cover_position', {
+                                      entity_id: entity.entity_id,
+                                      position: this.value
+                                  });
+                                }
                             }
                         }
                     }
                 }, 0);
 
-                return circle(state, input, unit);
+                return circle(state, input, unit, max);
             }
 
            /* * * * * * * * * * * * * * * * * *
@@ -186,6 +194,10 @@ circle:
                 return circle(state, input, unit);
             }
 
+            else if (domain === 'sensor' || domain === 'humidifier') {
+                return circle(state, input, unit, max);
+            }
+
            /* * * * * * * * * * * * * * * * * *
             *                                 *
             *              OTHER              *
@@ -193,7 +205,7 @@ circle:
             * * * * * * * * * * * * * * * * * */
 
             else if (variables.state_on) {
-                return circle(state, input, unit);
+                return circle(state, input, unit, max);
             }
         }
       ]]]

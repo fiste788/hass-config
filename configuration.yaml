@@ -1,14 +1,14 @@
 homeassistant:
-  name: Hem
+  name: SMV
   latitude: !secret homeassistant_latitude
   longitude: !secret homeassistant_longitude
   elevation: !secret homeassistant_elevation
   unit_system: metric
   temperature_unit: C
-  time_zone: Europe/Stockholm
-  language: sv
-  country: SE
-  currency: SEK
+  time_zone: Europe/Rome
+  country: IT
+  language: IT
+  currency: EUR
   packages: !include_dir_named packages
   customize_domain:
     automation:
@@ -45,32 +45,78 @@ lovelace:
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
       { url: '/local/browser_mod_icon.js?v=0.5',                                    type: module },
-      { url: '/local/fonts.css?v=2.1',                                              type: css }
+      { url: '/local/fonts.css?v=2.1',                                              type: css },
+      
+      {
+        url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js,
+        type: module,
+      },
+      { url: /hacsfiles/kiosk-mode/kiosk-mode.js, type: module },
+      {
+        url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,
+        type: module,
+      },
+      { url: /hacsfiles/todoist-card/todoist-card.js, type: module },
     ]
 
 recorder:
   db_url: !secret recorder_db_url
+  purge_keep_days: 30
+  commit_interval: 20
   exclude:
+    domains:
+      - device_tracker
+      - media_player
+      - uptime
+      - time_date
+      - worldclock
+      - automation
+      - updater
     entity_globs:
+      - wheater.*
+      - sensor.clock*
+      - sensor.date*
+      - sensor.glances*
+      - sensor.load_*m
+      - sensor.time*
+      - sensor.uptime*
       - sensor.browser_*
+      - sensor.wheater_*
+      - sensor.*_network_up
+      - sensor.*_network_down
+      - sensor.*_cpu_*
+      - sensor.*_battery_*
+      - sensor.*_memory_*
+      - sensor.memory_*
+      - sensor.*_memory
+      - sensor.*_received
+      - sensor.*_sent
+      - sensor.internetgatewaydevicev2_fritz_box_7590_*
+    entities:
+      - sun.sun # Don't record sun data
+      - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+      - sensor.date
+      - sensor.template_sidebar
+      - sensor.template_fullykiosk_memory
+      - sensor.fire_tablet_internal_storage_free_space
+    event_types:
+      - call_service # Don't record service calls
+      
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - ::1
 
 logger:
   default: warning
-  logs:
-    homeassistant.components.websocket_api: fatal
-    custom_components.monitor_docker.helpers: error
-    homeassistant.setup: error
 
 sensor:
   - platform: time_date
     display_options:
       - time
       - date
-
-calendar:
-  - platform: caldav
-    username: !secret caldav2_username
-    password: !secret caldav2_password
-    url: https://caldav.icloud.com
-    calendars:
-      - !secret caldav2_calendar
+  
+# Text to speech
+tts:
+  - platform: google_translate

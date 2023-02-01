@@ -55,7 +55,7 @@ extra_styles:
           --card-phone: 2.271;
         }
 
-        ${this._config.template.includes('light') ? `
+        ${this._config.template.includes('light') || this._config.template.includes('cover') ? `
 
          /* * * * * * * * * * * * * * * * * *
           *                                 *
@@ -154,17 +154,26 @@ extra_styles:
           font-weight: var(--button-card-font-weight);
           letter-spacing: var(--button-card-letter-spacing);
         }
+        #state {
+          font-size: smaller;
+        }
 
         /* portrait */
         @media screen and (max-width: 1200px) {
           #name, #state {
             font-size: calc(var(--button-card-font-size) * var(--card-portrait));
           }
+          #state {
+            font-size: smaller;
+          }
         }
         /* phone */
         @media screen and (max-width: 800px) {
-          #name, #state {
+          #name {
             font-size: calc(var(--button-card-font-size) * var(--card-phone));
+          }
+          #state {
+            font-size: calc(var(--button-card-font-size) * var(--card-phone) - 0.85vw);
           }
         }
 

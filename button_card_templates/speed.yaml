@@ -1,0 +1,46 @@
+speed:
+  template:
+    - base
+    - circle
+    - graph
+  show_state: false
+  variables:
+    max: 100
+    circle_input: >
+      [[[ return entity.state ]]]
+    circle_input_unit: Mb/s
+    icon: >
+      [[[ return `<ha-icon icon='mdi:speedometer'></ha-icon>` ]]]
+  custom_fields:
+    graph:
+      card:
+        type: custom:mini-graph-card
+        entities: >
+          [[[ return [entity.entity_id] ]]]
+        color_thresholds:
+          - color: "#fe0000"
+            value: >
+              [[[ return variables.max / 10 ]]]
+          - color: "#FF5733"
+            value: >
+              [[[ return variables.max / 33 ]]]
+          - color: "#26fe00"
+            value: >
+              [[[ return variables.max ]]]
+        line_color: blue
+        line_width: 8
+        font_size: 75
+        show:
+          name: false
+          icon: false
+          state: false
+  style:
+    top: 20.35%
+    left: 41.31%
+    width: 10%
+  styles:
+    custom_fields:
+      icon:
+        - width: 87%
+        - margin-left: -12%
+        - margin-top: -1%

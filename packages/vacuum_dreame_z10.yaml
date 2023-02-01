@@ -1,0 +1,95 @@
+homeassistant:
+  customize:
+    sensor.z10pro_last_clean_end:
+      friendly_name: Ultima pulizia
+      icon: mdi:calendar-clock
+
+template:
+  - select:
+    - name: vacuum_speed
+      state: >
+        {% set fan_speed = state_attr('vacuum.dreame_bot_z10_pro', 'fan_speed') %}
+        {{ 'Standard' if fan_speed == None else fan_speed }}
+      options: >
+        {% set fan_speed_list = state_attr('vacuum.dreame_bot_z10_pro', 'fan_speed_list') %}
+        {{ ['Standard'] if fan_speed_list == None else fan_speed_list }}
+      select_option:
+        service: vacuum.set_fan_speed
+        target:
+          entity_id: vacuum.dreame_bot_z10_pro
+        data:
+          fan_speed: >
+            {{ option }}
+  - sensor:
+      - unique_id: vacuum_filter
+        state: >
+          {{ state_attr('vacuum.dreame_bot_z10_pro','filter_left') }}
+        attributes:
+          friendly_name: Filtro
+          icon: cil:roborock-filter
+          unit_of_measurement: '%'
+
+      - unique_id: vacuum_mainbrush
+        state: >
+          {{ state_attr('vacuum.dreame_bot_z10_pro', 'main_brush_left') }}
+        attributes:
+          friendly_name: Spazzola
+          icon: cil:roborock-mainbrush
+          unit_of_measurement: '%'
+
+      - unique_id: vacuum_sensors
+        state: >
+          {{ state_attr('vacuum.dreame_bot_z10_pro', 'sensor_dirty_left') }}
+        attributes:
+          friendly_name: Sensori
+          icon: cil:roborock-sensor
+          unit_of_measurement: '%'
+      
+      - unique_id: vacuum_sidebrush
+        state: >
+          {{ state_attr('vacuum.dreame_bot_z10_pro', 'side_brush_left') }}
+        attributes:
+          friendly_name: Spazzola laterale
+          icon: cil:roborock-sidebrush
+          unit_of_measurement: '%'
+
+      
+
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret xiaomi_vacuum_host
+    token: !secret xiaomi_vacuum_token
+    username: !secret xiaomi_cloud_username
+    password: !secret xiaomi_cloud_password
+    name: dreame_bot_z10_pro_map
+    country: de
+    colors:
+      color_robo: [224,224,224]
+      color_charger: [27,117,27]
+      color_path: [30,80,113]
+      color_goto_path: [30,80,113]
+      color_map_wall_v2: [30,30,30]
+      color_obstacle: [30,30,30]
+      color_virtual_walls: [255,0,0,60]
+      color_no_go_zones_outline: [255,0,0,60]
+      color_no_go_zones: [255,0,0,28]
+      color_scan: [0,0,0,0]
+      color_map_inside: [0,0,0,0]
+      color_map_outside: [0,0,0,0]
+      color_grey_wall: [0,0,0,0]
+      color_map_wall: [0,0,0,0]
+      color_zones_outline: [0,0,0,0]
+      color_zones: [0,0,0,0]
+    draw:
+      - all
+    map_transformation:
+      scale: 2
+    sizes:
+      charger_radius: 10
+      vacuum_radius: 10
+    attributes:
+      - calibration_points
+      - room_numbers
+      - rooms
+    auto_update: false
+    scan_interval: 3600

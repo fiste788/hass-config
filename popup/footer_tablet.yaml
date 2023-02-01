@@ -2,7 +2,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Platta
+    title: Tablet
     content:
       type: vertical-stack
       cards:
@@ -12,12 +12,12 @@ browser_mod:
             class: content
           entities:
 
-            - entity: switch.galaxy_tab_a_screen
+            - entity: switch.fire_tablet_screen
               secondary_info: last-changed
 
             - type: custom:slider-entity-row
-              entity: number.galaxy_tab_a_screen_brightness
-              name: Ljusstyrka
+              entity: number.fire_tablet_screen_brightness
+              name: Luminosità
               icon: mdi:brightness-6
               hide_state: false
               card_mod:
@@ -28,9 +28,9 @@ browser_mod:
                       flex: auto !important;
                     }
 
-            - entity: switch.galaxy_tab_a_screensaver
+            - entity: switch.fire_tablet_screensaver
 
-            - entity: binary_sensor.galaxy_tab_a_plugged_in
+            - entity: binary_sensor.fire_tablet_plugged_in
 
             - type: custom:bar-card
               width: 55%
@@ -51,13 +51,13 @@ browser_mod:
               entity_row: true
               entities:
 
-                - entity: sensor.galaxy_tab_a_battery
+                - entity: sensor.fire_tablet_battery
                   icon: mdi:battery
                   tap_action:
                     action: call-service
                     service: homeassistant.update_entity
                     service_data:
-                      entity_id: sensor.galaxy_tab_a_battery_level
+                      entity_id: sensor.fire_tablet_battery
 
             - type: custom:bar-card
               width: 55%
@@ -73,7 +73,7 @@ browser_mod:
               entities:
 
                 - entity: sensor.template_fullykiosk_memory
-                  name: Minne - 2GB
+                  name: Memoria - 2GB
                   icon: mdi:memory
                   tap_action:
                     action: call-service
@@ -82,7 +82,7 @@ browser_mod:
                       entity_id: sensor.template_fullykiosk_memory
 
                 - entity: sensor.template_fullykiosk_storage
-                  name: Lagring - 32GB
+                  name: Disco - 16GB
                   icon: mdi:sd
                   tap_action:
                     action: call-service
@@ -102,7 +102,7 @@ browser_mod:
             type: horizontal-stack
             cards:
               - type: custom:button-card
-                name: Startsidan
+                name: Home page
                 icon: mdi:reload
                 tap_action:
                   action: call-service
@@ -111,14 +111,14 @@ browser_mod:
                     sequence:
                       - service: browser_mod.notification
                         data:
-                          message: Laddar om startsidan...
+                          message: Caricamento pagina...
                       - service: button.press
                         data:
-                          entity_id: button.galaxy_tab_a_load_start_url
+                          entity_id: button.fire_tablet_load_start_url
                 template: icon_name
 
               - type: custom:button-card
-                name: Hela appen
+                name: Riavvio
                 icon: mdi:reload
                 tap_action:
                   action: call-service
@@ -127,8 +127,8 @@ browser_mod:
                     sequence:
                       - service: browser_mod.notification
                         data:
-                          message: Startar om Fully Kiosk Browser...
+                          message: Riavvio Fully Kiosk Browser
                       - service: button.press
                         data:
-                          entity_id: button.galaxy_tab_a_restart_browser
+                          entity_id: button.fire_tablet_restart_browser
                 template: icon_name

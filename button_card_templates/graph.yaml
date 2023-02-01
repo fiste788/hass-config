@@ -1,0 +1,33 @@
+graph:
+  custom_fields:
+    graph:
+      card:
+        type: custom:mini-graph-card
+        line_color: blue
+        line_width: 8
+        font_size: 75
+        show:
+          name: false
+          icon: false
+          state: false
+          labels: false
+  style:
+    top: 20.35%
+    left: 41.31%
+    width: 10%
+  styles:
+    grid:
+      - grid-template-areas: |
+          "icon  circle"
+          "n     n"
+          "s     s"
+          "graph graph"
+      - grid-template-columns: repeat(2, 1fr)
+      - grid-template-rows: auto repeat(2, min-content) auto
+    custom_fields:
+      graph:
+        - bottom: 0
+        - left: 0
+        - width: 128%
+        - position: absolute
+        - margin: 0% 0% -13% -14%

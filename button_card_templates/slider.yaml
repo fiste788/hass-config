@@ -1,0 +1,21 @@
+slider:
+  custom_fields:
+    slider:
+      card:
+        type: custom:my-slider-v2
+        vertical: false
+        inverse: true
+  styles:
+    grid:
+      - grid-template: |
+          "icon circle"
+          "n n"
+          "s s"
+          "slider slider"
+    custom_fields:
+      slider:
+        - bottom: 0
+        - left: 0%
+        - width: 100%
+        - position: absolute
+        - margin: 0

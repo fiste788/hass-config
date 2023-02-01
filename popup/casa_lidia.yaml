@@ -1,0 +1,87 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Lidia
+    card_mod:
+      style:
+        #popup header
+        .:
+    style: |
+      --popup-max-width: 400px;
+    content:
+      type: vertical-stack
+      cards:
+        - type: entities
+          card_mod:
+            class: content
+          entities:
+            - entity: person.lidia
+              secondary_info: last-changed
+
+        - type: history-graph
+          card_mod:
+            style: |
+              ha-card > div {
+                padding: 0 2em 1em 1.6em !important;
+              }
+          entities:
+            - entity: person.lidia
+
+        - type: glance
+          card_mod:
+            style: |
+              ha-card > div {
+                padding: 1em 1.5em 0.2em 1em !important;
+              }
+          show_state: false
+          entities:
+
+            - entity: device_tracker.iphone_di_lidia
+              name: Router
+              icon: mdi:wifi
+              card_mod:
+                style: &state |
+                  state-badge {
+                    color: {{ '#3182b7' if is_state(config.entity, 'home') else '#3c3f3f' }};
+                  }
+
+            - entity: device_tracker.iphone_di_lidia_2
+              name: Position
+              icon: cil:iphone-modern
+              card_mod:
+                style: *state
+
+        - type: custom:mod-card
+          card_mod:
+            style:
+              hui-horizontal-stack-card$: |
+                #root {
+                  justify-content: space-evenly !important;
+                  padding: var(--tablet-popup-button-padding);
+                }
+          card:
+            type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Fai suonare il mio IPhone
+                icon: mdi:volume-high
+                template: icon_name
+                tap_action:
+                  action: call-service
+                  service: notify.mobile_app_iphone_di_lidia
+                  service_data:
+                    title: Trova il mio iPhone
+                    message: Eccomi
+                    data:
+                      push:
+                        sound:
+                          name: findmy.wav
+                          critical: 1
+                          volume: 1
+
+        - type: map
+          default_zoom: 16
+          dark_mode: true
+          entities:
+            - device_tracker.iphone_di_lidia_2

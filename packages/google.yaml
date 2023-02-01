@@ -1,0 +1,7 @@
+google_assistant:
+  project_id: home-assistant-smv
+  service_account: !include ../.storage/home-assistant-smv-2d4dbc13d185.json
+  report_state: true
+  exposed_domains:
+    - scene
+    - media_player

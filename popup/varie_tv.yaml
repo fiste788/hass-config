@@ -2,7 +2,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Vardagsrum Tv
+    title: LG Tv
     content:
       type: vertical-stack
       cards:
@@ -14,14 +14,12 @@ browser_mod:
             class: content
           entities:
 
-            - entity: media_player.sony_bravia_tv
+            - entity: media_player.tv
               name: Sony Bravia
               secondary_info: last-changed
 
-            - entity: automation.tv_on_lights
-
             - type: custom:more-info-card
-              entity: media_player.sony_bravia_tv
+              entity: media_player.tv
               card_mod:
                 style:
                   # hide everything but ha-select
@@ -60,7 +58,7 @@ browser_mod:
             type: horizontal-stack
             cards:
               - type: custom:button-card
-                entity: media_player.sony_bravia_tv
+                entity: media_player.tv
                 icon: mdi:volume-mute
                 tap_action:
                   action: call-service
@@ -73,7 +71,7 @@ browser_mod:
                 template: icon_only
 
               - type: custom:button-card
-                entity: media_player.sony_bravia_tv
+                entity: media_player.tv
                 icon: mdi:volume-minus
                 tap_action:
                   action: call-service
@@ -84,7 +82,7 @@ browser_mod:
                 template: icon_only
 
               - type: custom:button-card
-                entity: media_player.sony_bravia_tv
+                entity: media_player.tv
                 icon: mdi:volume-plus
                 tap_action:
                   action: call-service

@@ -1,0 +1,68 @@
+homeassistant:
+  customize:
+    switch.fire_tablet_screensaver:
+      friendly_name: Screensaver
+      icon: mdi:power-sleep
+    number.fire_tablet_screen_brightness:
+      friendly_name: Display
+      icon: mdi:tablet
+    switch.fire_tablet_screen:
+      friendly_name: Display
+      icon: mdi:tablet
+    binary_sensor.fire_tablet_plugged_in:
+      friendly_name: In carica
+      icon: mdi:power-plug
+    sensor.fire_tablet_last_app_start:
+      friendly_name: Ultima app
+      icon: mdi:update
+    sensor.fire_tablet_battery:
+      friendly_name: Batteria
+
+template:
+  - sensor:
+      - unique_id: fullykiosk_storage
+        state: >
+          {% set FreeSpace = states('sensor.fire_tablet_internal_storage_free_space') | float(default=0) %}
+          {% set TotalSpace = states('sensor.fire_tablet_internal_storage_total_space') | float(default=0) %}
+          {% if not (FreeSpace == 0.0 or TotalSpace == 0.0) %}
+            {{ 100 - (FreeSpace / TotalSpace * 100) | int(default=0) }}
+          {% endif %}
+        attributes:
+          friendly_name: Disco
+          icon: mdi:sd
+          unit_of_measurement: '%'
+
+      - unique_id: fullykiosk_memory
+        state: >
+          {% set FreeMemory = states('sensor.fire_tablet_free_memory') | float(default=0) %}
+          {% set TotalMemory = states('sensor.fire_tablet_total_memory') | float(default=0) %}
+          {% if not (FreeMemory == 0.0 or TotalMemory == 0.0) %}
+            {{ 100 - (FreeMemory / TotalMemory * 100) | int(default=0) }}
+          {% endif %}
+        attributes:
+          friendly_name: Memoria
+          icon: mdi:memory
+          unit_of_measurement: '%'
+
+automation:
+  - alias: notify_tablet_unplugged
+    id: '3972668118831'
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.fire_tablet_battery
+      below: 20
+    action:
+      service: notify.all_devices
+      data:
+        title: Caricare tablet...
+        message: >
+          Batteria {{ states(trigger.entity_id) }}%
+
+  - id: '1664890373048'
+    alias: Wall panel battery management
+    description: ''
+    use_blueprint:
+      path: seamus65/wallpanel-battery-management.yaml
+      input:
+        battery: sensor.fire_tablet_battery
+        charger: switch.sonoff_1001365338_1

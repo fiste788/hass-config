@@ -1,0 +1,29 @@
+humidifier:
+  template:
+    - circle
+    - graph
+  variables:
+    circle_input_unit: '%'
+    max: 100
+  styles:
+    custom_fields:
+      icon:
+        - width: 87%
+        - margin-left: -9%
+        - margin-top: -7%
+  custom_fields:
+    icon: >
+      [[[ return `<ha-icon icon='mdi:air-humidifier'></ha-icon>` ]]]
+    graph:
+      card:
+        entities: >
+          [[[
+            return variables.sensors
+          ]]]
+        smooting: true
+        labels: hover
+        hours_to_show: 24
+        fill: fade
+        animate: true
+        points_per_hour: 0.5
+        line_color: '#98d7e4'

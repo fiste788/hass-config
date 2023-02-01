@@ -16,3 +16,5 @@ www/Plex_Recently_Added/
 
 *.code-workspace
 home-assistant.log*
+image/
+www/img/weather/

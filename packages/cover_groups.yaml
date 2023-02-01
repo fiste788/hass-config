@@ -1,0 +1,137 @@
+homeassistant:
+  customize:
+    cover.bagno:
+      friendly_name: Tapparella bagno
+      device_class: blind
+    cover.cameretta:
+      friendly_name: Tapparella cameretta
+      device_class: blind
+    cover.cucina:
+      friendly_name: Tapparella cucina
+      device_class: blind
+    cover.matrimoniale:
+      friendly_name: Tapparella camera da letto
+      device_class: blind
+    cover.sala:
+      friendly_name: Tapparella soggiorno
+      device_class: blind
+    cover.tapparelle_zona_giorno:
+      device_class: blind
+    cover.tutte_le_tapparelle:
+      device_class: blind
+    cover.tapparelle_zona_notte:
+      device_class: blind
+
+cover:
+  - platform: group
+    name: Tutte le tapparelle
+    entities:
+      - cover.bagno
+      - cover.cameretta
+      - cover.cucina
+      - cover.matrimoniale
+      - cover.sala
+  - platform: group
+    name: Tapparelle zona giorno
+    entities:
+      - cover.sala
+      - cover.cucina
+  - platform: group
+    name: Tapparelle zona notte
+    entities:
+      - cover.bagno
+      - cover.matrimoniale
+      - cover.cameretta
+
+automation:
+  - id: '1653937797703'
+    alias: Abbassa tapparelle al sole
+    description: ''
+    trigger:
+    - platform: state
+      entity_id: sun.sun
+      attribute: rising
+      to: false
+    - platform: state
+      entity_id: weather.forecast_smv
+      to: sunny
+    - platform: state
+      entity_id: weather.forecast_smv
+      to: partlycloudy
+    condition:
+    - condition: state
+      entity_id: sun.sun
+      attribute: rising
+      state: false
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: weather.forecast_smv
+        state: sunny
+      - condition: state
+        entity_id: weather.forecast_smv
+        state: partlycloudy
+    - condition: or
+      conditions:
+      - condition: device
+        device_id: 6944b55873a8735d0ba0915545326c04
+        domain: cover
+        entity_id: cover.bagno
+        type: is_position
+        below: 100
+        above: 55
+      - condition: device
+        device_id: 56318de60e07145561dc08b48e8e4ab0
+        domain: cover
+        entity_id: cover.matrimoniale
+        type: is_position
+        above: 55
+    - condition: sun
+      before: sunset
+    action:
+    - service: cover.set_cover_position
+      target:
+        area_id:
+        - camera_da_letto
+        - bagno
+      data:
+        position: 55
+    mode: single
+  - id: '1659260807084'
+    alias: alza la tapparelle
+    description: ''
+    trigger:
+    - platform: time
+      at: 07:52
+    condition: []
+    action:
+    - service: cover.set_cover_position
+      target:
+        area_id:
+        - bagno
+        - camera_da_letto
+        - cameretta
+        - cucina
+        - soggiorno
+      data:
+        position: 100
+    mode: single
+  - id: '1659261068773'
+    alias: 'Abbassa le tapparelle '
+    description: ''
+    trigger:
+    - platform: time
+      at: '23:17'
+    condition: []
+    action:
+    - service: cover.set_cover_position
+      data:
+        position: 0
+      target:
+        area_id:
+        - bagno
+        - camera_da_letto
+        - cameretta
+        - cucina
+        - soggiorno
+    mode: single

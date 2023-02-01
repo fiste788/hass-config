@@ -2,18 +2,19 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Balkong
+    title: "Ventilatore"
     content:
       type: vertical-stack
       cards:
         - type: entities
           state_color: true
-          show_header_toggle: false
           card_mod:
             class: content
           entities:
 
-            - entity: switch.deltaco_sh_p01_socket
+            - entity: switch.gosund_fan_switch
               secondary_info: last-changed
 
-            - entity: automation.balcony_lights
+            - type: custom:slider-entity-row
+              entity: input_number.fan_timer
+              hide_state: false

@@ -1,0 +1,179 @@
+scene:
+  - id: '1638636891501'
+    name: Luce fredda
+    entities:
+      light.wiz_tunable_white_22045f:
+        min_mireds: 181
+        max_mireds: 333
+        effect_list:
+        - Cozy
+        - Wake up
+        - Bedtime
+        - Warm White
+        - Daylight
+        - Cool white
+        - Night light
+        - Focus
+        - Relax
+        - TV time
+        - Candlelight
+        - Golden white
+        - Pulse
+        - Steampunk
+        supported_color_modes:
+        - color_temp
+        color_mode: color_temp
+        brightness: 255
+        color_temp: 238
+        transition: 10
+        hs_color:
+        - 26.743
+        - 31.347
+        rgb_color:
+        - 255
+        - 210
+        - 175
+        xy_color:
+        - 0.409
+        - 0.361
+        effect: Daylight
+        friendly_name: Lampadario Bagnetto
+        supported_features: 7
+        state: 'on'
+  - id: '1638636927233'
+    name: Luce calda
+    entities:
+      light.wiz_tunable_white_22045f:
+        min_mireds: 181
+        max_mireds: 333
+        effect_list:
+        - Cozy
+        - Wake up
+        - Bedtime
+        - Warm White
+        - Daylight
+        - Cool white
+        - Night light
+        - Focus
+        - Relax
+        - TV time
+        - Candlelight
+        - Golden white
+        - Pulse
+        - Steampunk
+        supported_color_modes:
+        - color_temp
+        color_mode: color_temp
+        brightness: 255
+        transition: 10
+        color_temp: 312
+        hs_color:
+        - 27.518
+        - 51.595
+        rgb_color:
+        - 255
+        - 183
+        - 123
+        xy_color:
+        - 0.478
+        - 0.379
+        friendly_name: Lampadario Bagnetto
+        supported_features: 7
+        state: 'on'
+
+automation:
+  # - id: '1638636086629'
+  #   alias: Cambia colore in bianco freddo
+  #   description: ''
+  #   trigger:
+  #   - platform: device
+  #     type: turned_on
+  #     device_id: f27d89a7cad44024bdde1a4d10c04b0e
+  #     entity_id: light.wiz_tunable_white_22045f
+  #     domain: light
+  #   - platform: sun
+  #     event: sunrise
+  #     offset: 00:40:00
+  #   condition:
+  #   - condition: sun
+  #     before: sunset
+  #     after: sunrise
+  #     before_offset: -00:30:00
+  #     after_offset: 00:40:00
+  #   action:
+  #     - service: light.turn_on
+  #       data:
+  #         kelvin: 4300
+  #         transition: 5
+  #       target:
+  #         area_id: bagnetto
+  #   mode: single
+
+  # - id: '1638636339844'
+  #   alias: Cambia colore in bianco caldo
+  #   description: ''
+  #   trigger:
+  #   - platform: device
+  #     type: turned_on
+  #     device_id: f27d89a7cad44024bdde1a4d10c04b0e
+  #     entity_id: light.wiz_tunable_white_22045f
+  #     domain: light
+  #   - platform: sun
+  #     event: sunset
+  #   condition:
+  #   - condition: or
+  #     conditions:
+  #     - condition: sun
+  #       before: sunrise
+  #     - condition: sun
+  #       after: sunset
+  #   action:
+  #     - service: light.turn_on
+  #       data:
+  #         kelvin: 3200
+  #         transition: 5
+  #       target:
+  #         area_id: bagnetto
+  #   mode: single
+
+  - id: '1638636339844'
+    alias: 'Cambia colore in base al sole'
+    mode: single
+    trigger:
+      - platform: device
+        type: turned_on
+        device_id: f27d89a7cad44024bdde1a4d10c04b0e
+        entity_id: light.wiz_tunable_white_22045f
+        domain: light
+      - platform: sun
+        event: sunrise
+        offset: "00:40:00"
+      - platform: sun
+        event: sunset
+        offset: 0
+    action:
+      - choose:
+          - conditions:
+              - condition: sun
+                before: sunrise
+                after: sunset
+            sequence:
+              - service: light.turn_on
+                data:
+                  kelvin: 3200
+                  transition: 5
+                target:
+                  area_id: bagnetto
+          - conditions:
+              - condition: sun
+                before: sunset
+                before_offset: "-00:30:00"
+                after: sunrise
+                after_offset: "00:40:00"
+            sequence:
+              - service: light.turn_on
+                data:
+                  kelvin: 4300
+                  transition: 5
+                target:
+                  area_id: bagnetto

@@ -1,14 +1,4 @@
 rest:
-  - authentication: basic
-    username: !secret github_username
-    password: !secret github_access_token
-    resource: https://api.github.com/repos/esphome/esphome/releases/latest
-    sensor:
-      name: updates_esphome_latest
-      value_template: >
-        {{ value_json.tag_name }}
-    scan_interval: 86400
-
   - resource: https://api.github.com/repos/home-assistant/core/releases/latest
     sensor:
       name: hass_release_notes
@@ -37,9 +27,9 @@ template:
           friendly_name: >
             {% set release = state_attr('calendar.home_assistant_devs','message') %}
             {% if release == 'Home Assistant Core Beta Release' %}
-              Nästa beta
+              Prossima beta
             {% elif release == 'Home Assistant Core Release' %}
-              Nästa release
+              Prossima release
             {% else %}
               {{ release }}
             {% endif %}
@@ -95,25 +85,12 @@ template:
 
 sensor:
   - platform: command_line
-    name: updates_kemper
-    command: !secret updates_kemper
-    value_template: >
-      {{ 'on' if value_json.profiler_installed != value_json.profiler_latest or
-      value_json.rigmanager_latest != value_json.rigmanager_installed else 'off' }}
-    json_attributes:
-      - profiler_latest
-      - profiler_installed
-      - rigmanager_latest
-      - rigmanager_installed
-    scan_interval: 86400
-
-  - platform: command_line
     name: hacs_installed
     command: |-
       python3 << EOF
       import os, json
       installed = {"repositories": []}
-      PATH = "/config/.storage/hacs.repositories"
+      PATH = "/volume1/@appdata/homeassistant/config/.storage/hacs.repositories"
       with open(PATH, "r", encoding="UTF-8") as file:
           data = json.load(file)["data"]
           for i in data:

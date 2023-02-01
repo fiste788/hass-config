@@ -2,7 +2,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Dammsugare
+    title: Aspirapolvere
     timeout: 300000
     style: |
       --popup-max-width: calc(385px + 495px);
@@ -49,7 +49,7 @@ browser_mod:
             grid-area: info
           cards:
           - type: entities
-            title: Översikt
+            title: Panoramica
             card_mod:
               class: header
               style: |
@@ -59,8 +59,8 @@ browser_mod:
                 }
             entities:
 
-            - entity: vacuum.morty
-            - entity: sensor.morty_last_clean_end
+            - entity: vacuum.dreame_bot_z10_pro
+            #- entity: sensor.morty_last_clean_end
 
             - type: custom:bar-card
               width: 55%
@@ -80,17 +80,19 @@ browser_mod:
                   to: 10
               entity_row: true
               entities:
-                - entity: vacuum.morty
+
+                - entity: vacuum.dreame_bot_z10_pro
                   attribute: battery_level
-                  name: Batteri
+                  name: Batteria
                   icon: mdi:battery
+
                 - entity: sensor.template_vacuum_filter
                 - entity: sensor.template_vacuum_mainbrush
                 - entity: sensor.template_vacuum_sidebrush
                 - entity: sensor.template_vacuum_sensors
 
             - type: custom:more-info-card
-              entity: vacuum.morty
+              entity: vacuum.dreame_bot_z10_pro
               card_mod:
                 style:
                   # hide everything but ha-select
@@ -139,7 +141,7 @@ browser_mod:
               type: horizontal-stack
               cards:
                 - type: custom:button-card
-                  entity: vacuum.morty
+                  entity: vacuum.dreame_bot_z10_pro
                   icon: mdi:play-pause
                   tap_action:
                     action: call-service
@@ -152,17 +154,17 @@ browser_mod:
                         ]]]`
                       ]]]
                     service_data:
-                      entity_id: vacuum.morty
+                      entity_id: vacuum.dreame_bot_z10_pro
                   template: icon_only
 
                 - type: custom:button-card
-                  entity: vacuum.morty
+                  entity: vacuum.dreame_bot_z10_pro
                   icon: mdi:battery-charging
                   tap_action:
                     action: call-service
                     service: vacuum.return_to_base
                     service_data:
-                      entity_id: vacuum.morty
+                      entity_id: vacuum.dreame_bot_z10_pro
                   template: icon_only
 
                 - type: custom:button-card
@@ -171,15 +173,15 @@ browser_mod:
                     action: call-service
                     service: vacuum.send_command
                     service_data:
-                      entity_id: vacuum.morty
+                      entity_id: vacuum.dreame_bot_z10_pro
                       command: app_goto_target
                       params: [16821,23105]
                   template: icon_only
 
-        ### KARTLÄGGNING
+          ### KARTLÄGGNING
 
         - type: custom:xiaomi-vacuum-map-card
-          title: Kartläggning
+          title: Mappa
           view_layout:
             grid-area: map
           card_mod:
@@ -214,41 +216,143 @@ browser_mod:
                 color: #9da0a2 !important;
                 padding: 0.42em;
               }
-          language: sv
-          entity: vacuum.morty
+          language: it
+          vacuum_platform: default
+          entity: vacuum.dreame_bot_z10_pro
           map_source:
-            camera: camera.vacuum_map
+            camera: camera.dreame_bot_z10_pro_map
           calibration_source:
             camera: true
-          map_locked: true
           map_modes:
-            - template: vacuum_clean_zone
-            - template: vacuum_clean_zone_predefined
+            - template: vacuum_clean_segment
+              repeats_type: EXTERNAL
+              max_repeats: 3
+              service_call_schema:
+                service: dreame_vacuum.vacuum_clean_segment
+                service_data:
+                  entity_id: '[[entity_id]]'
+                  segments: '[[selection]]'
+                  repeats: '[[repeats]]'
               predefined_selections:
-                - zones: [[14895, 20640, 18409, 24058]]
-                  icon:
-                    name: mdi:silverware-fork-knife
-                    x: 16708
-                    y: 22291
-                - zones: [[15208, 17278, 20204, 20980]]
-                  icon:
-                    name: mdi:bed
-                    x: 17706
-                    y: 19043
-                - zones: [[18170, 20925, 23138, 25026]]
-                  icon:
-                    name: mdi:door
-                    x: 22293
-                    y: 21864
-                - zones: [[21474, 24942, 27269, 28873]]
-                  icon:
-                    name: mdi:sofa
-                    x: 24401
-                    y: 26736
-                - zones: [[17687, 24885, 21487, 28816]]
-                  icon:
-                    name: mdi:speaker
-                    x: 19757
-                    y: 26622
-            - template: vacuum_goto
-            - template: vacuum_follow_path
+                - id: 1
+                  outline:
+                    - - -4050
+                      - -2050
+                    - - -4050
+                      - 400
+                    - - -1950
+                      - 400
+                    - - -1950
+                      - -2050
+                - id: 2
+                  outline:
+                    - - -2200
+                      - -3300
+                    - - -2200
+                      - 600
+                    - - 1150
+                      - 600
+                    - - 1150
+                      - -3300
+                - id: 3
+                  outline:
+                    - - -6550
+                      - -3600
+                    - - -6550
+                      - 450
+                    - - -4050
+                      - 450
+                    - - -4050
+                      - -3600
+                - id: 4
+                  outline:
+                    - - -2150
+                      - -5050
+                    - - -2150
+                      - -3350
+                    - - -450
+                      - -3350
+                    - - -450
+                      - -5050
+                - id: 6
+                  outline:
+                    - - 350
+                      - -4950
+                    - - 350
+                      - -2350
+                    - - 2700
+                      - -2350
+                    - - 2700
+                      - -4950
+                - id: 7
+                  outline:
+                    - - -4050
+                      - -4600
+                    - - -4050
+                      - -2050
+                    - - -2150
+                      - -2050
+                    - - -2150
+                      - -4600
+                - id: 8
+                  outline:
+                    - - -12400
+                      - -8500
+                    - - -12400
+                      - -900
+                    - - -9600
+                      - -900
+                    - - -9600
+                      - -8500
+                - id: 9
+                  outline:
+                    - - -6750
+                      - -7950
+                    - - -6750
+                      - -3600
+                    - - -3450
+                      - -3600
+                    - - -3450
+                      - -7950
+                - id: 10
+                  outline:
+                    - - -9650
+                      - -4250
+                    - - -9650
+                      - -2150
+                    - - -7550
+                      - -2150
+                    - - -7550
+                      - -4250
+                - id: 11
+                  outline:
+                    - - -9950
+                      - -8100
+                    - - -9950
+                      - -4200
+                    - - -6400
+                      - -4200
+                    - - -6400
+                      - -8100
+            - template: vacuum_clean_zone
+              max_selections: 10
+              repeats_type: EXTERNAL
+              max_repeats: 3
+              service_call_schema:
+                service: dreame_vacuum.vacuum_clean_zone
+                service_data:
+                  entity_id: '[[entity_id]]'
+                  zone: '[[selection]]'
+                  repeats: '[[repeats]]'
+            
+            - name: Clean Spot
+              icon: mdi:map-marker-plus
+              max_repeats: 3
+              selection_type: MANUAL_POINT
+              repeats_type: EXTERNAL
+              service_call_schema:
+                service: dreame_vacuum.vacuum_clean_spot
+                service_data:
+                  entity_id: '[[entity_id]]'
+                  points: '[[selection]]'
+                  repeats: '[[repeats]]'

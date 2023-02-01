@@ -53,3 +53,37 @@ climate_swing_mode:
           ]]]
   template:
     - climate_base
+
+climate:
+  template:
+    - circle
+    - graph
+  variables:
+    circle_input_unit: °
+  custom_fields:
+    graph:
+      card:
+        entities: >
+          [[[
+            return variables.sensors
+          ]]]
+        smooting: true
+        labels: hover
+        hours_to_show: 24
+        fill: fade
+        animate: true
+        points_per_hour: 0.5
+        color_thresholds_transition: smooth
+        color_thresholds:
+          - color: "#f53a1b"
+            value: 29
+            #value: 26
+          - color: "#ef6a12"
+            value: 27
+            #value: 23
+          - color: "#8ff331"
+            value:  24
+            #value: 20
+          - color: "#00a1ff"
+            value:  22
+            #value: 18
