@@ -1,0 +1,14 @@
+script:
+  home_leave:
+    alias: Sto uscendo
+    sequence:
+      - service: homeassistant.turn_off
+        target:
+          entity_id:
+            - light.wiz_rgbww_tunable_f361c9
+            - light.wiz_tunable_white_22045f
+            - climate.daikin_perfera
+            - climate.daikin_stylish_2
+            - media_player.lg_webos_smart_tv
+      - delay:
+          seconds: 4

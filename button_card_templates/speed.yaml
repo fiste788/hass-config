@@ -7,7 +7,7 @@ speed:
   variables:
     max: 100
     circle_input: >
-      [[[ return entity.state ]]]
+      [[[ return Math.round(entity.state) ]]]
     circle_input_unit: Mb/s
     icon: >
       [[[ return `<ha-icon icon='mdi:speedometer'></ha-icon>` ]]]
@@ -20,10 +20,10 @@ speed:
         color_thresholds:
           - color: "#fe0000"
             value: >
-              [[[ return variables.max / 10 ]]]
+              [[[ return variables.max / 25 ]]]
           - color: "#FF5733"
             value: >
-              [[[ return variables.max / 33 ]]]
+              [[[ return variables.max / 50 ]]]
           - color: "#26fe00"
             value: >
               [[[ return variables.max ]]]

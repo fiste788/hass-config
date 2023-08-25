@@ -6,12 +6,6 @@ homeassistant:
     media_player.spotify_stefano_sonzogni:
       friendly_name: Spotify
 
-switch:
-  - platform: wake_on_lan
-    name: TV_turnon
-    host: !secret lgtv_ip
-    mac: !secret lgtv_mac
-
 template:
   - select:
       - name: conditional_media
@@ -58,8 +52,14 @@ template:
             option: >
               {{ option }}
 
+wake_on_lan: # enables `wake_on_lan` integration
 
-
-
-
-
+automation:
+  - alias: "Turn On TV with WakeOnLan"
+    trigger:
+      - platform: webostv.turn_on
+        entity_id: media_player.lg_webos_smart_tv
+    action:
+      - service: wake_on_lan.send_magic_packet
+        data:
+          mac: !secret lgtv_mac

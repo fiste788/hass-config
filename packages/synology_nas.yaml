@@ -15,16 +15,16 @@ sensor:
 #       - type: last_boot
 #     scan_interval: 120
 
-#   # https://github.com/NemesisRE/sensor.plex_recently_added
-#   - platform: plex_recently_added
-#     host: !secret plex_host
-#     port: !secret plex_port
-#     token: !secret plex_token
-#     ssl: true
-#     max: 1
-#     img_dir: /
-#     scan_interval: 3600
-#     image_resolution: 800
+  # https://github.com/NemesisRE/sensor.plex_recently_added
+  - platform: plex_recently_added
+    host: !secret plex_host
+    port: !secret plex_port
+    token: !secret plex_token
+    ssl: true
+    max: 1
+    img_dir: /
+    scan_interval: 3600
+    image_resolution: 800
 
 # binary_sensor:
 #   - platform: ping
@@ -70,8 +70,8 @@ template:
             {{ states | rejectattr('domain', 'in', exclude) | list | count }}
 
 shell_command:
-  ha_restart: ../restart.sh
-  purge_log: truncate -s 0 /home-assistant.log
+  ha_restart: /var/packages/homeassistant/var/restart.sh
+  purge_log: truncate -s 0 /var/packages/homeassistant/var/home-assistant.log
 
 automation:
   - alias: Set theme at boot
@@ -87,7 +87,7 @@ automation:
   - alias: backup_ha_monthly
     trigger:
       platform: time
-      at: 04:00:00
+      at: 05:00:00
     condition: >
       {{ now().day == 1 }}
     action:

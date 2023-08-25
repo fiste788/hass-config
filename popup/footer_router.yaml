@@ -23,24 +23,6 @@ browser_mod:
             - entity: binary_sensor.fritz_box_7590_connection
               secondary_info: last-changed
 
-            - type: custom:bar-card
-              width: 55%
-              height: 2em
-              decimal: 0
-              unit_of_measurement: '%'
-              positions:
-                icon: outside
-                indicator: 'off'
-                name: outside
-              severity:
-                - color: '#6d2525'
-                  from: 90
-                  to: 999
-              entity_row: true
-              entities:
-                - entity: sensor.fritz_box_7590_gb_received
-                - entity: sensor.fritz_box_7590_gb_sent
-
             - entity: sensor.fritz_box_7590_device_uptime
 
         - type: custom:mod-card

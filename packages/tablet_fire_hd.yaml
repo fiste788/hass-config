@@ -30,7 +30,7 @@ template:
         attributes:
           friendly_name: Disco
           icon: mdi:sd
-          unit_of_measurement: '%'
+          unit_of_measurement: "%"
 
       - unique_id: fullykiosk_memory
         state: >
@@ -42,11 +42,11 @@ template:
         attributes:
           friendly_name: Memoria
           icon: mdi:memory
-          unit_of_measurement: '%'
+          unit_of_measurement: "%"
 
 automation:
   - alias: notify_tablet_unplugged
-    id: '3972668118831'
+    id: "3972668118831"
     trigger:
       platform: numeric_state
       entity_id: sensor.fire_tablet_battery
@@ -58,11 +58,119 @@ automation:
         message: >
           Batteria {{ states(trigger.entity_id) }}%
 
-  - id: '1664890373048'
+  - id: "1664890373048"
     alias: Wall panel battery management
-    description: ''
+    description: ""
     use_blueprint:
       path: seamus65/wallpanel-battery-management.yaml
       input:
-        battery: sensor.fire_tablet_battery
+        battery: sensor.fire_tablet_fksa_battery_level
         charger: switch.sonoff_1001365338_1
+
+  - id: "1675845157049"
+    alias: Wall panel motion detection management
+    description: ""
+    trigger:
+      - platform: state
+        entity_id:
+          - person.lidia
+          - person.stefano
+        to:
+          - home
+    condition:
+      - condition: time
+        after: "07:45:00"
+        before: "23:45:00"
+    action:
+      - choose:
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: person.lidia
+                    state: home
+                  - condition: state
+                    entity_id: person.stefano
+                    state: home
+            sequence:
+              - type: turn_on
+                device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+                entity_id: switch.fire_tablet_motion_detection
+                domain: switch
+          - conditions:
+              - condition: not
+                conditions:
+                  - condition: state
+                    entity_id: person.stefano
+                    state: home
+              - condition: not
+                conditions:
+                  - condition: state
+                    entity_id: person.lidia
+                    state: home
+            sequence:
+              - type: turn_off
+                device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+                entity_id: switch.fire_tablet_motion_detection
+                domain: switch
+
+  - id: "1675845212055"
+    alias: Restart fire tablet daily
+    mode: single
+    trigger:
+      - platform: time
+        at: "05:35:00"
+    condition: []
+    action:
+      - device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+        domain: button
+        entity_id: button.fire_tablet_reboot_device
+        type: press
+
+
+  - id: "1675845212050"
+    alias: Wall panel motion detection time management
+    description: ""
+    trigger:
+      - platform: time
+        at: "07:45:00"
+      - platform: time
+        at: "23:45:00"
+    action:
+      - choose:
+          - conditions:
+              - condition: time
+                after: "07:45:00"
+              - condition: state
+                entity_id: person.lidia
+                state: home
+              - condition: state
+                entity_id: person.stefano
+                state: home
+            sequence:
+              - type: turn_on
+                device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+                entity_id: switch.fire_tablet_motion_detection
+                domain: switch
+          - conditions:
+              - condition: time
+                after: "23:45:00"
+            sequence:
+              - type: turn_off
+                device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+                entity_id: switch.fire_tablet_motion_detection
+                domain: switch
+
+  - id: "1675845212051"
+    alias: Keep table alive
+    description: ""
+    trigger:
+      - platform: time_pattern
+        minutes: "/5"
+    condition: []
+    action:
+      - type: turn_off
+        device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+        entity_id: switch.fire_tablet_screensaver
+        domain: switch
+    mode: single

@@ -151,7 +151,7 @@ conditional_media:
               artist = entity.attributes.media_artist,
               title = entity.attributes.media_title;
 
-            if (data !== undefined) {
+            if (data !== undefined && data.length) {
                 var number = data[variables.i].number === undefined && data[variables.i].aired !== undefined
                     ? `(${data[variables.i].aired.split("-")[0]})`
                     : data[variables.i].number === undefined && data[variables.i].aired === undefined
@@ -226,7 +226,7 @@ conditional_media:
                   return `url(${states[this._config?.triggers_update].state})`;
               } else {
                 let data = entity.attributes.data;
-                return data && (data[variables.i].fanart || data[variables.i].poster)
+                return data && data.length && (data[variables.i].fanart || data[variables.i].poster)
                     ? `url("${data[variables.i].fanart}"), url("${data[variables.i].poster}")`
                     : `url("${variables.entity_picture}")`;
               }

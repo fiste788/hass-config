@@ -154,13 +154,16 @@ automation:
     action:
       - choose:
           - conditions:
-              - condition: sun
-                before: sunrise
-                after: sunset
+              - condition: or
+                conditions:
+                  - condition: sun
+                    before: sunrise
+                  - condition: sun
+                    after: sunset
             sequence:
               - service: light.turn_on
                 data:
-                  kelvin: 3200
+                  kelvin: 3100
                   transition: 5
                 target:
                   area_id: bagnetto

@@ -14,7 +14,7 @@ browser_mod:
       type: vertical-stack
       cards:
         - type: humidifier
-          entity: humidifier.jsq5_cloud_493460
+          entity: humidifier.deerma_jsq5_cf89_humidifier
 
         - type: custom:apexcharts-card
           layout: minimal
@@ -53,7 +53,7 @@ browser_mod:
               crosshairs:
                 show: false
           series:
-            - entity: sensor.jsq5_cloud_493460_humidity
+            - entity: sensor.deerma_jsq5_cf89_relative_humidity
               name: Umidità
               color: "#98d7e4"
               type: area

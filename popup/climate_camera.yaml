@@ -2,7 +2,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Clima salotto
+    title: Clima camera
     content:
       type: custom:tabbed-card
       styles:
@@ -62,6 +62,7 @@ browser_mod:
                       - 'off'
                       - cool
                       - fan_only
+                      - dry
                     primary_info: name
                     secondary_info: state
                     show_temperature_control: false
@@ -104,7 +105,7 @@ browser_mod:
                           - climate_fan_mode
 
                       - type: custom:button-card
-                        entity: climate.adaikin_perferac
+                        entity: climate.daikin_perfera
                         name: Alto
                         variables:
                           fan_mode: high
@@ -119,8 +120,6 @@ browser_mod:
 
                   - entity: sensor.daikin_perfera_inside_temperature
                     name: Temperatura
-                  - entity: sensor.daikin_perfera_humidity
-                    name: Umidità
 
               - type: custom:apexcharts-card
                 layout: minimal

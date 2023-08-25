@@ -31,3 +31,4 @@ graph:
         - width: 128%
         - position: absolute
         - margin: 0% 0% -13% -14%
+        - --ha-card-border-width: 0

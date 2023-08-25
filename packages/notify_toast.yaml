@@ -1,0 +1,29 @@
+notify:
+  - name: all_devices
+    platform: group
+    services:
+      - service: mobile_app_pixel_2_xl
+      - service: mobile_app_iphone_di_lidia
+
+  - platform: html5
+    name: notify
+    vapid_pub_key: !secret notify_public_key
+    vapid_prv_key: !secret notify_private_key
+    vapid_email: stefano788@gmail.com
+
+automation:
+  - alias: dismiss_lovelace_updated
+    id: '1309195316329'
+    mode: restart
+    trigger:
+      platform: event
+      event_type: lovelace_updated
+    action:
+      repeat:
+        count: 5
+        sequence:
+          - delay: 0.5
+          - service: browser_mod.notification
+            data:
+              duration: 1
+              message: ' '

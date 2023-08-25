@@ -114,6 +114,7 @@ updates:
   state_display: |
     [[[
       // variables
+      debugger;
       let output = '',
           updates = states[variables.updates],
           hacs_installed = states[variables.hacs_installed]?.attributes.repositories,
@@ -176,7 +177,7 @@ hacs_iframe:
     browser_mod:
       service: browser_mod.popup
       data:
-        title: ' '
+        title: " "
         size: fullscreen
         content:
           type: iframe

@@ -1,0 +1,54 @@
+- id: '1680090452591'
+  alias: Keep tablet alive
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '5'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+    entity_id: switch.fire_tablet_screensaver
+    domain: switch
+  mode: single
+- id: '1680090571048'
+  alias: Keep tablet on
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '5'
+    hours: '0'
+    seconds: '0'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+    entity_id: switch.fire_tablet_screensaver
+    domain: switch
+  mode: single
+- id: '1681299258234'
+  alias: Keep table alive
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '5'
+    hours: '0'
+    seconds: '0'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 41a4fa97d13f7aa8ab4a51dd480c2ac9
+    entity_id: switch.fire_tablet_screensaver
+    domain: switch
+  mode: single
+- id: '1682017079113'
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - service: browser_mod.javascript
+    data:
+      code: console.log('keep alive')
+    target:
+      device_id: 889b9ba27824d88901552616fe795a16
+  mode: single

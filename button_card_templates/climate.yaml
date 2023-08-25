@@ -60,6 +60,12 @@ climate:
     - graph
   variables:
     circle_input_unit: °
+    state: >
+      [[[ 
+        return !entity || (entity.state + (entity.state === 'cool'
+            ? ' - ' + entity.attributes.current_temperature
+            : '')); 
+      ]]]
   custom_fields:
     graph:
       card:
