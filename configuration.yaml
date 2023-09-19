@@ -10,6 +10,8 @@ homeassistant:
   language: IT
   currency: EUR
   packages: !include_dir_named packages
+  external_url: !secret homeassistant_external_url
+  internal_url: !secret homeassistant_internal_url
   customize_domain:
     automation:
       initial_state: true
@@ -33,7 +35,6 @@ lovelace:
       { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
       { url: /hacsfiles/button-card/button-card.js,                                 type: module },
       { url: /hacsfiles/custom-icons/custom-icons.js,                               type: module },
-      { url: /hacsfiles/kiosk-mode/kiosk-mode.js,                                   type: module },
       { url: /hacsfiles/lovelace-layout-card/layout-card.js,                        type: module },
       { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
       { url: /hacsfiles/lovelace-mushroom/mushroom.js,                              type: module },
@@ -51,7 +52,6 @@ lovelace:
         url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js,
         type: module,
       },
-      { url: /hacsfiles/kiosk-mode/kiosk-mode.js, type: module },
       {
         url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,
         type: module,
@@ -91,22 +91,26 @@ recorder:
       - sensor.*_memory
       - sensor.*_received
       - sensor.*_sent
+      - sensor.*load_throughput
       - sensor.internetgatewaydevicev2_fritz_box_7590_*
     entities:
       - sun.sun # Don't record sun data
       - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+      - sensor.processor_use_percent
       - sensor.date
       - sensor.template_sidebar
       - sensor.template_fullykiosk_memory
       - sensor.fire_tablet_internal_storage_free_space
     event_types:
       - call_service # Don't record service calls
-      
+
 http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 127.0.0.1
     - ::1
+    - 192.168.0.100
+    - 172.30.33.0/24
 
 logger:
   default: warning
@@ -116,7 +120,7 @@ sensor:
     display_options:
       - time
       - date
-  
+
 # Text to speech
 tts:
   - platform: google_translate

@@ -98,7 +98,9 @@ views:
 
           - type: custom:button-card
             name: Todo
-            tap_action: !include popup/footer_nas.yaml
+            styles:
+              card:
+                - --ha-card-border-width: 0
             
           - type: custom:todoist-card
             entity: sensor.todo_list
@@ -259,12 +261,12 @@ views:
                         state_not: MiSmartClock
                     card:
                       type: custom:button-card
-                      entity: sensor.plex_recently_added
+                      entity: camera.google_photos_favorites_media
                       tap_action:
                         action: none
                       template:
                         - conditional_media
-                        - icon_plex
+                        - icon_google_photos
 
                   - type: conditional
                     conditions:
@@ -339,9 +341,9 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: climate.daikin_stylish
+            entity: climate.daikin_stylish_2
             name: AC soggiorno
-            hold_action: !include popup/climate_soggiorno.yaml
+            double_tap_action: !include popup/climate_soggiorno.yaml
             template:
               - base
               - icon_climate
@@ -361,7 +363,7 @@ views:
           - type: custom:button-card
             entity: climate.daikin_perfera
             name: AC camera
-            hold_action: !include popup/climate_camera.yaml
+            double_tap_action: !include popup/climate_camera.yaml
             template:
               - base
               - icon_climate
@@ -381,7 +383,7 @@ views:
           - type: custom:button-card
             entity: fan.stylish_fan_only
             name: "Ventilatore"
-            hold_action: !include popup/climate_ventilatore.yaml
+            double_tap_action: !include popup/climate_ventilatore.yaml
             template:
               - base
               - icon_fan2
@@ -390,7 +392,7 @@ views:
           - type: custom:button-card
             entity: humidifier.deerma_jsq5_cf89_humidifier
             name: "Umidificatore"
-            hold_action: !include popup/climate_humidifier.yaml
+            double_tap_action: !include popup/climate_humidifier.yaml
             template:
               - base
               - humidifier

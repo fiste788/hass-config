@@ -38,6 +38,7 @@ cover:
           type: vertical-stack
           cards:
             - type: custom:more-info-card
+              title:
               entity: >
                 [[[ return entity.entity_id ]]]
 

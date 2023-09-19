@@ -239,6 +239,9 @@ tablet:
     #################################################
 
     grid-layout$hui-vertical-stack-card$: |
+      :host {
+        overflow: auto;
+      }
       #root {
         background-color: rgba(0, 0, 0, 0.06);
         border-radius: 0;
@@ -421,9 +424,9 @@ tablet:
         background-color: var(--popup-background-color) !important;
       }
       
-    ha-header-bar$: |
-      header {
-        background: var(--tablet-popup-header-color) !important;
+      ha-dialog>div.heading>ha-dialog-header {
+        font-family: var(--primary-font-family);
+        background-color: var(--tablet-popup-header-color);
         border-bottom: var(--tablet-popup-border-style);
       }
     #################################################
