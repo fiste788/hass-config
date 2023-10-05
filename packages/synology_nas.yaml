@@ -2,19 +2,8 @@ homeassistant:
   customize:
     sensor.diskstation_volume_1_average_disk_temp:
       friendly_name: Temperatura
-    sensor.processor_use_percent:
-      icon: mdi:chip
 
 sensor:
-#   - platform: systemmonitor
-#     resources:
-#       - type: disk_use_percent
-#         arg: /
-#       - type: memory_use_percent
-#       - type: processor_use
-#       - type: last_boot
-#     scan_interval: 120
-
   # https://github.com/NemesisRE/sensor.plex_recently_added
   - platform: plex_recently_added
     host: !secret plex_host
@@ -30,7 +19,7 @@ sensor:
 #   - platform: ping
 #     name: nas_internet_access
 #     host: 8.8.8.8
-    
+
 template:
   - sensor:
       - unique_id: nas_status
@@ -68,27 +57,3 @@ template:
           other: >
             {% set exclude = this.attributes | list %}
             {{ states | rejectattr('domain', 'in', exclude) | list | count }}
-
-shell_command:
-  ha_restart: /var/packages/homeassistant/var/restart.sh
-  purge_log: truncate -s 0 /var/packages/homeassistant/var/home-assistant.log
-
-automation:
-  - alias: Set theme at boot
-    mode: single
-    trigger:
-    - platform: event
-      event_type: homeassistant_start
-    action:
-    - service: frontend.set_theme
-      data:
-        name: tablet
-    id: eddfab65a66d4f6bb36dc2f1239d999b
-  - alias: backup_ha_monthly
-    trigger:
-      platform: time
-      at: 05:00:00
-    condition: >
-      {{ now().day == 1 }}
-    action:
-      service: backup.create

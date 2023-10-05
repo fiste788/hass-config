@@ -1,0 +1,90 @@
+esphome:
+  name: esp32-bt-scale
+  friendly_name: ESP32-bt-scale
+
+esp32:
+  board: nodemcu-32s 
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "/ZDtkVVpbTwdA7pmxqkrz3clPahFsYrDuBSsRhIztmI="
+
+ota:
+  password: "b75a9218b45c2ecbedc154b3e00d3e4f"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32-Bt-Scale Fallback Hotspot"
+    password: "W474ZhUOJx6Q"
+  
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.0.56
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.0.1
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
+
+captive_portal:
+    
+esp32_ble_tracker:
+
+sensor:
+  - platform: xiaomi_miscale
+    mac_address: '0C:95:41:AE:21:30'
+    weight:
+      name: "Xiaomi Mi Scale Peso"
+      id: weight_miscale
+      on_value:
+        then:
+          - lambda: |-
+              if (id(weight_miscale).state < 69) {
+                return id(weight_stefano).publish_state(x);}
+              else {
+                return id(weight_lidia).publish_state(x);}
+
+    impedance:
+      name: "Xiaomi Mi Scale Impedenza"
+      id: impedance_miscale
+      on_value:
+        then:
+          - lambda: |-
+              if (id(weight_miscale).state < 69) {
+                return id(impedance_stefano).publish_state(x);}
+              else {
+                return id(impedance_lidia).publish_state(x);}
+
+  - platform: template
+    name: Peso Stefano
+    id: weight_stefano
+    unit_of_measurement: 'kg'
+    icon: mdi:weight-kilogram
+    accuracy_decimals: 2
+  - platform: template
+    name: Impedenza Stefano
+    id: impedance_stefano
+    unit_of_measurement: 'Ω'
+    icon: mdi:omega
+    accuracy_decimals: 0
+  - platform: template
+    name: Peso Lidia
+    id: weight_lidia
+    unit_of_measurement: 'kg'
+    icon: mdi:weight-kilogram
+    accuracy_decimals: 2
+  - platform: template
+    name: Impedenza Lidia
+    id: impedance_lidia
+    unit_of_measurement: 'Ω'
+    icon: mdi:omega
+    accuracy_decimals: 0

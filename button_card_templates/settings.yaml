@@ -1,7 +1,7 @@
 settings:
   variables:
-    entity_tablet: switch.fire_tablet_screensaver
-    entity_browser_mod: media_player.browser_f5ceefe9-f697a8c4
+    entity_tablet: switch.fire_tablet_screen
+    entity_browser_mod: media_player.fire_tablet
 
     translate_unknown: Sconosciuto
     translate_idle: Inattivo
@@ -19,4 +19,3 @@ settings:
     translate_playing: Riproduzione
     translate_paused: Pausa
     translate_standby: Stand by
-

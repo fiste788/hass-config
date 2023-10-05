@@ -42,7 +42,7 @@ template:
         attributes:
           home_assistant: >
             {% set installed = states('sensor.current_version') %}
-            {% set latest = states('sensor.docker_hub_beta') if version(installed).beta else states('sensor.docker_hub') %}
+            {% set latest = states('sensor.home_assistant_versions_beta') if version(installed).beta else states('sensor.home_assistant_versions') %}
             {{ iif(version(latest) > version(installed) and '.' in installed and '.' in latest, 1, 0) }}
           update_entities: >
             {{ states.update | selectattr('state','eq','on') | list | count }}
@@ -58,13 +58,13 @@ template:
           {{ ns.list | count }}
 
 command_line:
-  - sensor: 
+  - sensor:
       name: hacs_installed
       command: |-
         python3 << EOF
         import os, json
         installed = {"repositories": []}
-        PATH = "/volume1/@appdata/homeassistant/config/.storage/hacs.repositories"
+        PATH = "/config/.storage/hacs.repositories"
         with open(PATH, "r", encoding="UTF-8") as file:
             data = json.load(file)["data"]
             for i in data:

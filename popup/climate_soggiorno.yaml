@@ -3,13 +3,6 @@ browser_mod:
   service: browser_mod.popup
   data:
     title: Clima salotto
-    card_mod:
-      style:
-        #popup header
-        .: |
-          div.content {
-            margin-top: -24px !important;
-          }
     content:
       type: custom:tabbed-card
       styles:
@@ -60,13 +53,12 @@ browser_mod:
                       }
 
                 entities:
-
                   - type: custom:mushroom-climate-card
                     entity: climate.daikin_stylish_2
                     name: Climatizzatore
                     icon: mdi:home-thermometer
                     hvac_modes:
-                      - 'off'
+                      - "off"
                       - cool
                       - fan_only
                       - dry
@@ -94,7 +86,6 @@ browser_mod:
                   - type: custom:hui-horizontal-stack-card
                     title: Modalità
                     cards:
-
                       - type: custom:button-card
                         entity: climate.daikin_stylish_2
                         name: Basso
@@ -125,9 +116,9 @@ browser_mod:
                         template:
                           - climate_swing_mode
 
-                  - entity: sensor.daikin_stylish_2_inside_temperature
+                  - entity: sensor.daikin_stylish_inside_temperature_2
                     name: Temperatura
-                  - entity: sensor.daikin_stylish_2_humidity
+                  - entity: sensor.daikin_stylish_humidity
                     name: Umidità
 
               - type: custom:apexcharts-card
@@ -167,9 +158,9 @@ browser_mod:
                     crosshairs:
                       show: false
                 series:
-                  - entity: sensor.daikin_stylish_2_inside_temperature
+                  - entity: sensor.daikin_stylish_inside_temperature_2
                     name: Temp
-                    color: '#385581'
+                    color: "#385581"
                     type: area
                     fill_raw: last
                     group_by:

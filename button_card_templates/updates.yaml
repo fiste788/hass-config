@@ -114,7 +114,6 @@ updates:
   state_display: |
     [[[
       // variables
-      debugger;
       let output = '',
           updates = states[variables.updates],
           hacs_installed = states[variables.hacs_installed]?.attributes.repositories,
@@ -153,7 +152,7 @@ updates:
               : `${count} ${count === 1 ? update_available : updates_available} ${String.fromCodePoint('0x1f389')}`;
 
       return `
-        <ha-icon icon="mdi:package-up"></ha-icon> <span class="title">Integrationer</span><br>
+        <ha-icon icon="mdi:package-up"></ha-icon> <span class="title">Integrazioni</span><br>
         <p class="subtitle">${subtitle}</p>
         <ul>${output}</ul>
       `;

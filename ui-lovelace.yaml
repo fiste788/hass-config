@@ -1,5 +1,4 @@
-button_card_templates:
-  !include_dir_merge_named button_card_templates
+button_card_templates: !include_dir_merge_named button_card_templates
 
 views:
   - type: custom:grid-layout
@@ -78,7 +77,6 @@ views:
         view_layout:
           grid-area: sidebar
         cards:
-
           - type: custom:button-card
             entity: sensor.template_sidebar
             template: sidebar
@@ -101,7 +99,7 @@ views:
             styles:
               card:
                 - --ha-card-border-width: 0
-            
+
           - type: custom:todoist-card
             entity: sensor.todo_list
             show_header: false
@@ -120,6 +118,8 @@ views:
                 titleColor: red
               - entity: calendar.compleanni
                 titleColor: blue
+              - entity: calendar.famiglia
+                titleColor: purple
 
       #################################################
       #                                               #
@@ -133,7 +133,6 @@ views:
           grid-area: varie
         columns: 2
         cards:
-
           - type: custom:button-card
             entity: sensor.speedtest_download
             name: Download
@@ -164,7 +163,7 @@ views:
                   return variables.translate_unknown;
                 }
               ]]]
-            hold_action: !include popup/varie_tv.yaml
+            double_tap_action: !include popup/varie_tv.yaml
             template:
               - base
               - icon_tv
@@ -207,7 +206,6 @@ views:
           grid-area: tapparelle
         columns: 2
         cards:
-
           - type: custom:button-card
             entity: cover.tutte_le_tapparelle
             name: Tutte
@@ -238,17 +236,14 @@ views:
           grid-area: media
         columns: 1
         cards:
-
           - type: custom:swipe-card
             parameters:
               speed: 550
               spaceBetween: 40
               threshold: 5
             cards:
-
               - type: horizontal-stack
                 cards:
-
                   - type: conditional
                     conditions:
                       - entity: select.conditional_media
@@ -304,7 +299,6 @@ views:
               - type: grid
                 columns: 2
                 cards:
-
                   - type: custom:button-card
                     entity: media_player.lg_webos_smart_tv
                     triggers_update: sensor.youtube_watching
@@ -339,11 +333,12 @@ views:
           grid-area: climate
         columns: 2
         cards:
-
           - type: custom:button-card
             entity: climate.daikin_stylish_2
             name: AC soggiorno
             double_tap_action: !include popup/climate_soggiorno.yaml
+            triggers_update:
+              - fan.stylish_fan_only
             template:
               - base
               - icon_climate
@@ -383,7 +378,9 @@ views:
           - type: custom:button-card
             entity: fan.stylish_fan_only
             name: "Ventilatore"
-            double_tap_action: !include popup/climate_ventilatore.yaml
+            #double_tap_action: !include popup/climate_ventilatore.yaml
+            triggers_update:
+              - climate.daikin_stylish_2
             template:
               - base
               - icon_fan2
@@ -420,16 +417,14 @@ views:
           grid-area: casa
         columns: 2
         cards:
-
           - type: custom:button-card
             entity: person.stefano
             triggers_update:
               - sensor.stefano_last_changed
-            double_tap_action:
-              !include popup/casa_stefano.yaml
+            double_tap_action: !include popup/casa_stefano.yaml
             variables:
               retain: sensor.stefano_last_changed
-            template: 
+            template:
               - person
               - circle
 
@@ -437,11 +432,10 @@ views:
             entity: person.lidia
             triggers_update:
               - sensor.lidia_last_changed
-            double_tap_action:
-              !include popup/casa_lidia.yaml
+            double_tap_action: !include popup/casa_lidia.yaml
             variables:
               retain: sensor.lidia_last_changed
-            template: 
+            template:
               - person
               - circle
 
@@ -469,12 +463,10 @@ views:
         view_layout:
           grid-area: footer
         cards:
-
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:nas"></ha-icon> NAS
-            tap_action:
-              !include popup/footer_nas.yaml
+            tap_action: !include popup/footer_nas.yaml
             triggers_update:
               - update.nas_dsm_update
               - sensor.nas_volume_1_status
@@ -497,8 +489,7 @@ views:
             entity: sensor.template_updates
             name: >
               <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Aggiornamenti
-            tap_action:
-              !include popup/footer_updates.yaml
+            tap_action: !include popup/footer_updates.yaml
             variables:
               notify: >
                 [[[
@@ -509,8 +500,7 @@ views:
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:robot-vacuum"></ha-icon> Pulizia
-            tap_action:
-              !include popup/footer_vacuum.yaml
+            tap_action: !include popup/footer_vacuum.yaml
             triggers_update:
               - sensor.date
             variables:
@@ -524,28 +514,33 @@ views:
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:chart-line-variant"></ha-icon> Storico
-            tap_action:
-              !include popup/footer_history.yaml
+            tap_action: !include popup/footer_history.yaml
+            template: footer
+
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:raspberry-pi"></ha-icon> Rpi
+            tap_action: !include popup/footer_rpi.yaml
             template: footer
 
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:tablet"></ha-icon> Tablet
-            tap_action:
-              !include popup/footer_tablet.yaml
+            tap_action: !include popup/footer_tablet.yaml
             variables:
               notify: >
                 [[[
-                  let id = states['binary_sensor.galaxy_tab_a_plugged_in'];
-                  if (id) return id.state === 'off';
+                  let id = states['binary_sensor.fire_tablet_fksa_is_charging'];
+                  let level = states['sensor.fire_tablet_battery'];
+                  if (id) return id.state === 'off' && parseInt(level.state) < 20;
                 ]]]
             template: footer
 
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:router-wireless"></ha-icon> Router
-            tap_action:
-              !include popup/footer_router.yaml
+            tap_action: !include popup/footer_router.yaml
+            double_tap_action: !include popup/footer_wifi_qr.yaml
             triggers_update:
               - update.unifi_dream_machine
               - binary_sensor.template_udm_internet

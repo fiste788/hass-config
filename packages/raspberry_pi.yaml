@@ -1,0 +1,37 @@
+homeassistant:
+  customize:
+    sensor.processor_use_percent:
+      icon: mdi:chip
+
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use_percent
+      - type: processor_use
+      - type: last_boot
+    scan_interval: 120
+
+shell_command:
+  purge_log: truncate -s 0 /config/home-assistant.log
+
+automation:
+  - alias: Set theme at boot
+    mode: single
+    trigger:
+      - platform: event
+        event_type: homeassistant_start
+    action:
+      - service: frontend.set_theme
+        data:
+          name: tablet
+    id: eddfab65a66d4f6bb36dc2f1239d999b
+  - alias: backup_ha_monthly
+    trigger:
+      platform: time
+      at: 05:00:00
+    condition: >
+      {{ now().day == 1 }}
+    action:
+      service: backup.create

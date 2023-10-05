@@ -3,10 +3,6 @@ browser_mod:
   service: browser_mod.popup
   data:
     title: Lidia
-    card_mod:
-      style:
-        #popup header
-        .:
     style: |
       --popup-max-width: 400px;
     content:
@@ -36,7 +32,6 @@ browser_mod:
               }
           show_state: false
           entities:
-
             - entity: device_tracker.iphone_di_lidia_2
               name: Router
               icon: mdi:wifi

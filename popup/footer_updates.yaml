@@ -2,7 +2,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Uppdateringar
+    title: Aggiornamenti
     content:
       type: custom:mod-card
       card_mod:
@@ -29,17 +29,17 @@ browser_mod:
             template: updates_hass
             variables:
               available: sensor.template_updates
-              latest: sensor.docker_hub
-              latest_beta: sensor.docker_hub_beta
+              latest: sensor.home_assistant_versions
+              latest_beta: sensor.home_assistant_versions_beta
               release_notes: sensor.hass_release_notes
               release_notes_beta: sensor.hass_release_notes_beta
 
           - type: custom:button-card
             entity: sensor.current_version
-            name: Uppdatera HASS
+            name: Aggiorna HASS
             variables:
-              latest: sensor.docker_hub
-              latest_beta: sensor.docker_hub_beta
+              latest: sensor.home_assistant_versions
+              latest_beta: sensor.home_assistant_versions
             tap_action:
               action: call-service
               service: browser_mod.sequence
@@ -64,7 +64,7 @@ browser_mod:
 
           - type: custom:button-card
             entity: sensor.template_updates
-            name: Uppdateringar
+            name: Aggiornamenti
             template:
               - updates_icon_name
               - >
@@ -80,7 +80,7 @@ browser_mod:
                 sequence:
                   - service: browser_mod.notification
                     data:
-                      message: Söker efter uppdateringar...
+                      message: Verifica aggiornamenti
                   - service: homeassistant.update_entity
                     data:
                       entity_id:

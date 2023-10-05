@@ -1,7 +1,13 @@
+homeassistant:
+  customize:
+    fan.stylish_fan_only:
+      friendly_name: Ventilatore camera
+
 fan:
   - platform: template
     fans:
       stylish_fan_only:
+        unique_id: stylish_fan_only
         speed_count: 3
         value_template: >
           {{ 'on' if is_state('climate.daikin_stylish', 'fan_only') else 'off' }}

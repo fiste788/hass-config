@@ -1,21 +1,22 @@
 # Example configuration.yaml entry
-# calendar:
-#  - platform: todoist
-#    token: !secret todoist_api_token
+calendar:
+  - platform: todoist
+    token: !secret todoist_api_token
 
 rest_command:
   todoist:
     method: post
     headers:
       Authorization: !secret todoist_api_auth
-    url: 'https://api.todoist.com/sync/v9/sync'
+    url: "https://api.todoist.com/sync/v9/sync"
     payload: !secret todoist_api_payload
-    content_type: 'application/x-www-form-urlencoded'
+    content_type: "application/x-www-form-urlencoded"
 
 rest:
   - resource: https://api.todoist.com/sync/v9/projects/get_data
     headers:
       Authorization: !secret todoist_api_auth
+    method: GET
     params:
       project_id: 2281192088
     sensor:
@@ -26,9 +27,13 @@ rest:
         - items
     scan_interval: 1500
 
-  - resource: https://api.todoist.com/rest/v2/tasks?project_id=2281192088&filter=5 giorni & (p1 | p2)
+  - resource: https://api.todoist.com/rest/v2/tasks
     headers:
       Authorization: !secret todoist_api_auth
+    method: GET
+    params:
+      project_id: 2281192088
+      filter: "5 giorni & (p1 | p2)"
     sensor:
       name: next_todo
       value_template: >

@@ -7,11 +7,11 @@ homeassistant:
   temperature_unit: C
   time_zone: Europe/Rome
   country: IT
-  language: IT
+  language: it
   currency: EUR
   packages: !include_dir_named packages
   external_url: !secret homeassistant_external_url
-  internal_url: !secret homeassistant_internal_url
+  #internal_url: !secret homeassistant_internal_url
   customize_domain:
     automation:
       initial_state: true
@@ -31,23 +31,37 @@ lovelace:
   mode: yaml
   resources:
     [
-      { url: /hacsfiles/apexcharts-card/apexcharts-card.js,                         type: module },
-      { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
-      { url: /hacsfiles/button-card/button-card.js,                                 type: module },
-      { url: /hacsfiles/custom-icons/custom-icons.js,                               type: module },
-      { url: /hacsfiles/lovelace-layout-card/layout-card.js,                        type: module },
-      { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
-      { url: /hacsfiles/lovelace-mushroom/mushroom.js,                              type: module },
-      { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
-      { url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js,  type: module },
-      { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
-      { url: /hacsfiles/tabbed-card/tabbed-card.js,                                 type: module },
+      { url: /hacsfiles/apexcharts-card/apexcharts-card.js, type: module },
+      { url: /hacsfiles/bar-card/bar-card.js, type: module },
+      { url: /hacsfiles/button-card/button-card.js, type: module },
+      { url: /hacsfiles/custom-icons/custom-icons.js, type: module },
+      { url: /hacsfiles/lovelace-layout-card/layout-card.js, type: module },
+      {
+        url: /hacsfiles/lovelace-more-info-card/more-info-card.js,
+        type: module,
+      },
+      { url: /hacsfiles/lovelace-mushroom/mushroom.js, type: module },
+      {
+        url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,
+        type: module,
+      },
+      {
+        url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js,
+        type: module,
+      },
+      { url: /hacsfiles/swipe-card/swipe-card.js, type: module },
+      { url: /hacsfiles/tabbed-card/tabbed-card.js, type: module },
 
-      { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
-      { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
-      { url: '/local/browser_mod_icon.js?v=0.5',                                    type: module },
-      { url: '/local/fonts.css?v=2.1',                                              type: css },
-      
+      { url: "/local/marked.min.js?v=4.3.0", type: module },
+      { url: "/local/vanilla-tilt.min.js?v=1.8.0", type: module },
+      { url: "/local/browser_mod_icon.js?v=0.5", type: module },
+      { url: "/local/fonts.css?v=2.1", type: css },
+      {
+        url: /hacsfiles/LG-WebOS-Remote-Control/lg-remote-control.js,
+        type: module,
+      },
+      { url: /hacsfiles/channel-pad/card-channel-pad.js, type: module },
+
       {
         url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js,
         type: module,
@@ -62,7 +76,7 @@ lovelace:
 recorder:
   db_url: !secret recorder_db_url
   purge_keep_days: 30
-  commit_interval: 20
+  commit_interval: 10
   exclude:
     domains:
       - device_tracker
@@ -74,6 +88,8 @@ recorder:
       - updater
     entity_globs:
       - wheater.*
+      - camera.*
+      - calendar.*
       - sensor.clock*
       - sensor.date*
       - sensor.glances*
@@ -82,10 +98,11 @@ recorder:
       - sensor.uptime*
       - sensor.browser_*
       - sensor.wheater_*
+      - sensor.todo_list
       - sensor.*_network_up
       - sensor.*_network_down
       - sensor.*_cpu_*
-      - sensor.*_battery_*
+      - sensor.*_battery*
       - sensor.*_memory_*
       - sensor.memory_*
       - sensor.*_memory
@@ -96,13 +113,17 @@ recorder:
     entities:
       - sun.sun # Don't record sun data
       - sensor.last_boot # Comes from 'systemmonitor' sensor platform
-      - sensor.processor_use_percent
+      - sensor.processor_use
       - sensor.date
       - sensor.template_sidebar
       - sensor.template_fullykiosk_memory
       - sensor.fire_tablet_internal_storage_free_space
+      - image.fritz_box_7590_sonzoghera_guest
     event_types:
       - call_service # Don't record service calls
+      - service_registered
+      - recorder_5min_statistics_generated
+      - component_loaded
 
 http:
   use_x_forwarded_for: true
@@ -114,6 +135,9 @@ http:
 
 logger:
   default: warning
+  logs:
+    homeassistant.components.recorder.purge: debug
+    homeassistant.components.cast.media_player: debug
 
 sensor:
   - platform: time_date

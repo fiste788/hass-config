@@ -1,7 +1,13 @@
+homeassistant:
+  customize:
+    fan.perfera_fan_only:
+      friendly_name: Ventilatore soggiorno
+
 fan:
   - platform: template
     fans:
       perfera_fan_only:
+        unique_id: perfera_fan_only
         speed_count: 3
         value_template: >
           {{ 'on' if is_state('climate.daikin_perfera', 'fan_only') else 'off' }}

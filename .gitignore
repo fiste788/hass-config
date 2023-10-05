@@ -18,3 +18,9 @@ www/Plex_Recently_Added/
 home-assistant.log*
 image/
 www/img/weather/
+www/lg_remote/
+tts/*
+ui_lovelace_minimalist/
+aircast.xml
+themes/minimalist-*
+esphome/trash

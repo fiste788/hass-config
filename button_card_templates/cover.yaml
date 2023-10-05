@@ -19,7 +19,7 @@ cover:
     quarter3_position: 85
     circle_input: >
       [[[ return entity === undefined || entity.attributes.current_position; ]]]
-    circle_input_unit: '%'
+    circle_input_unit: "%"
   #double_tap_action: !include ../popup/cover.yaml
   double_tap_action:
     action: fire-dom-event
@@ -38,7 +38,7 @@ cover:
           type: vertical-stack
           cards:
             - type: custom:more-info-card
-              title:
+              title: " "
               entity: >
                 [[[ return entity.entity_id ]]]
 
@@ -70,7 +70,7 @@ cover:
                       return lights;
                   }
                 ]]]
-          
+
   tap_action:
     action: call-service
     service: cover.toggle
